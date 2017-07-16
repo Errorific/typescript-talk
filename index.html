@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Typescript</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/solarized.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,8 +24,24 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+        <section>
+          <h1>Typescript</h1>
+          <h2>JS but a bit better</h2>
+          <p>Chris Mckay</p>
+          <aside class="notes">
+            <p>Example Note</p>
+          </aside>
+        </section>
+
+        <section>
+          <p>Typescript is...</p>
+          <ul>
+            <li>Made by Microsoft in 2012, 1.0 in 2014</li>
+            <li>Strictly typed superset of JS</li>
+            <li>That thing Angular 2 is written in</li>
+          </ul>
+
+        </section>
 			</div>
 		</div>
 
@@ -37,6 +53,10 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+        history: true,
+        controls: true,
+        slideNumber: true,
+        center: true,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
