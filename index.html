@@ -26,7 +26,7 @@
 			<div class="slides">
         <section>
           <h1>Typescript</h1>
-          <h2>JS but a bit better</h2>
+          <h2>JS for squares</h2>
           <p>Chris Mckay</p>
           <aside class="notes">
             <p>Example Note</p>
@@ -36,13 +36,217 @@
         <section>
           <p>Typescript is...</p>
           <ul>
-            <li>Made by Microsoft in 2012, 1.0 in 2014</li>
-            <li>Strictly typed superset of JS</li>
-            <li>That thing Angular 2 is written in</li>
+            <li class="fragment">Made by Microsoft in 2012, 1.0 in 2014</li>
+            <li class="fragment">Strictly typed superset of JS</li>
+            <li class="fragment">That thing Angular 2 is written in</li>
           </ul>
-
+          <aside class="notes">
+            <span>v2.0 last year</span>
+            <span>find out when flow dates are</span>
+          </aside>
         </section>
-			</div>
+        <section data-background="/img/showmewhatyougot.gif">
+        </section>
+        <section>
+          <table>
+            <tbody>
+              <tr>
+                <td>Algebraic Data Types</td>
+                <td>Got it</td>
+              </tr>
+              <tr>
+                <td>Higher Kinded Types</td>
+                <td>Don't got it</td>
+              </tr>
+              <tr>
+                <td>Generics</td>
+                <td>Got it</td>
+              </tr>
+              <tr>
+                <td>Classes</td>
+                <td>Got it</td>
+              </tr>
+              <tr>
+                <td>Pattern Matching</td>
+                <td>Don't got it</td>
+              </tr>
+              <tr>
+                <td>Currying</td>
+                <td>Don't got it</td>
+              </tr>
+              <tr>
+                <td>First class functions</td>
+                <td>Got it</td>
+              </tr>
+              <tr>
+                <td>Type inference</td>
+                <td>Got it</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section data-background="/img/disqualified.gif">
+          <aside class="notes">
+            <span>we're not getting all the cool functional stuff</span>
+          </aside>
+        </section>
+        <section>
+          Lets look at the language
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+var a = 'a';
+
+let b = 'b';
+
+const c = 'c';
+          </code></pre>
+          <aside class="notes">
+            3 variable types. Var is a leaky variable. Let is lexically sealed. Const is lexically sealed
+            and assignable once, not really immutable though.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const num: number = 3;
+
+const bool: boolean = true;
+
+const str: string = "a string";
+          </code></pre>
+          <aside class="notes">
+            Basic primitives.
+            One type of number, no refinement for floats etc
+            2 strings, you want the lower case one
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const nothing: undefined = undefined;
+const nada: null = null;
+
+const artistFormerlyKnownAs: symbol = Symbol('Prince');
+          </code></pre>
+          <aside class="notes">
+            undef = uninitialised
+            null = unavailable
+            they're both basically the same except when they're not.
+            Just don't use null
+
+            Symbol, it makes completely unique values. es6, you probably won't need it, it's metaprogramming magic
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const yolo: any = 42;
+
+const slightlyLessYolo: object = new Date();
+          </code></pre>
+          <aside class="notes">
+            any is anything
+            object is anything not a primitive
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+function logHello (name: string): void {
+  console.log('Hello ' + name);
+}
+
+function hello (name: string): string {
+  return 'Hello ' + name;
+}
+
+const hello = (name: string): string => {
+  return 'Hello ' + name;
+}
+
+// Infers string => string
+const hello = name => 'Hello ' + name;
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const stringArray: Array&lt;string&gt; = [ 'a', 'b', 'c' ];
+
+const numberArray: number[] = [ 1, 2, 3 ];
+          </code></pre>
+          <aside class="notes">
+            arrays
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Point3D extends Point {
+  z?: number;
+}
+
+const p: Point = {
+  x: 3,
+  y: 2
+};
+
+const p3d: Point3D = p;
+          </code></pre>
+          <aside class="notes">
+            Interfaces are data types. Inheritence and multiple inheritence.
+            ? is optional key. Nominal typing
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+class Queue {
+  private data: string[] = [];
+
+  push = item => this.data.push(item);
+  pop = () => this.data.shift();
+}
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+class Queue<T> {
+  private data: T[] = [];
+
+  push = item => this.data.push(item);
+  pop = () => this.data.shift();
+}
+          </code></pre>
+        </section>
+        <section>
+          type aliases
+        </section>
+        <section>
+          type unions etc
+        </section>
+        <section>
+          Type Modifiers
+        </section>
+        <section>
+          Modules
+          It's just es6
+        </section>
+        <section>
+          Tooling
+        </section>
+        <section>
+          compilers
+        </section>
+        <section>
+          editor tools
+        </section>
+        <section>
+          definitely typed &> npm @types
+        </section>
+        <section>
+          react-create-app
+        </section>
+      </div>
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
