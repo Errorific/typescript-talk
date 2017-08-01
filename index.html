@@ -185,7 +185,14 @@ interface Point {
 interface Point3D extends Point {
   z?: number;
 }
-
+          </code></pre>
+          <aside class="notes">
+            Interfaces are data types. Inheritence and multiple inheritence.
+            ? is optional key. 
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
 const p: Point = {
   x: 3,
   y: 2
@@ -193,43 +200,201 @@ const p: Point = {
 
 const p3d: Point3D = p;
           </code></pre>
-          <aside class="notes">
-            Interfaces are data types. Inheritence and multiple inheritence.
-            ? is optional key. Nominal typing
-          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
 class Queue {
   private data: string[] = [];
 
-  push = item => this.data.push(item);
+  constructor(seed: string[] = []) {
+    this.data = seed;
+  }
+
+  push = (item: string) => this.data.push(item);
   pop = () => this.data.shift();
+}
+
+const queue = new Queue(['seed', 'values']);
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+class Queue&lt;T&gt; {
+  private data: T[];
+
+  constructor(seed: T[] = []) {
+    this.data = seed;
+  }
+
+  push = (item: T) => this.data.push(item);
+  pop = () => this.data.shift();
+}
+
+const queue = new Queue&lt;number&gt;([1, 2]);
+
+// Inferred as Queue&lt;number&gt;
+const inferredQueue = new Queue([1,2]);
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+interface Cat {
+  smiling: boolean,
+  teeth: number
+}
+
+interface Bus {
+  speed: number,
+  capacity: number
+}
+
+type CatOrBus = Cat | Bus;
+
+type CatBus = Cat & Bus;
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+interface Dog {
+  sound: 'Bark';
+  walk(): void;
+}
+
+interface Cat {
+  sound: 'Meow';
+  pat(): void;
+}
+
+type Pet = Dog | Cat;
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const whatsItDo = (p: Pet) => {
+  // sound is available on both
+  if (p.sound === 'Bark') {
+    // p is a Dog in here
+    p.walk();
+  } else {
+    // p is a Cat here
+    p.pat();
+  }
 }
           </code></pre>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-class Queue<T> {
-  private data: T[] = [];
+interface Bird {
+  sound: 'Chirp';
+  fly(): void;
+}
 
-  push = item => this.data.push(item);
-  pop = () => this.data.shift();
+type Pet = Dog | Cat | Bird;
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const whatsItDo = (p: Pet) => {
+  // sound is available on both
+  if (p.sound === 'Bark') {
+    // p is a Dog in here
+    p.walk();
+  } else {
+    // error here, p = Cat | Bird
+    p.pat();
+  }
 }
           </code></pre>
         </section>
         <section>
-          type aliases
+          <pre><code class="typescript" data-trim>
+const whatIsIt = (p: Pet): string {
+  // Error because unhandled case of Birb
+  // Function lacks ending return statement and return type
+  // does not include 'undefined'.
+  switch (p.sound) {
+    case 'Bark': return 'Dog';
+    case 'Meow': return 'Cat';
+  }
+}
+          </code></pre>
+          <aside class="notes">
+            Great for switches
+            Not great, doesn't work properly for if-else. Side effect of how control flow analysis done, they're trying to fix it.
+          </aside>
         </section>
         <section>
-          type unions etc
+          <pre><code class="typescript" data-trim>
+// byDefault.ts
+const byDefault = "By Default";
+
+export default byDefault;
+
+// index.ts
+import byDefault from './byDefault';
+          </code></pre>
         </section>
         <section>
-          Type Modifiers
+          <pre><code class="typescript" data-trim>
+// explicit.ts
+export const explicitExport = "Explicit";
+
+// index.ts
+import { explicitExport } from './explicit';
+          </code></pre>
         </section>
         <section>
-          Modules
-          It's just es6
+          <pre><code class="typescript" data-trim>
+// explicit.ts
+export const explicitExport = "Explicit";
+
+// index.ts
+import * as Explicit from './explicit';
+
+console.log(Explicit.explicitExport);
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+declare function moment(...): moment.Moment;
+
+declare namespace moment {
+  type RelativeTimeKey = 's' | ... ;
+
+  interface Moment extends Object{
+    format(format?: string): string;
+    ...
+  }
+}
+
+export = moment;
+          </code></pre>
+          <aside class="notes">
+            ambient declarations. Namespaces are modules. Can export top level stuff too.
+            Can declare globally available variables, attach things to window, etc.
+          </aside>
+        </section>
+        <section>
+          screenshot of definitely typed
+          <aside class="notes">
+            definitely typed module count, dates?
+          </aside>
+        </section>
+        <section>
+          screenshot of npmjs @types namespace
+          <aside class="notes">
+            As of typescript 2.0. Types managed by npm rather than 'typings' tool. Exported from definitelytyped
+          </aside>
+        </section>
+        <section>
+          Image of file structure tree
+
+          node_modules/@types/...
+          node_modules/moment/moment.d.ts
+          types/...
+          <aside class="notes">
+            Looks first for ambient declaration in your source, then in shipped npm package, then in @types packages
+          </aside>
         </section>
         <section>
           Tooling
@@ -239,12 +404,6 @@ class Queue<T> {
         </section>
         <section>
           editor tools
-        </section>
-        <section>
-          definitely typed &> npm @types
-        </section>
-        <section>
-          react-create-app
         </section>
       </div>
 		</div>
