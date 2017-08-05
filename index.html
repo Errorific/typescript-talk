@@ -67,6 +67,11 @@
                 <td>Got it</td>
               </tr>
               <tr>
+                <td>Type classes</td>
+                <td>Don't got it</td>
+              </tr>
+
+              <tr>
                 <td>Pattern Matching</td>
                 <td>Don't got it</td>
               </tr>
@@ -149,6 +154,14 @@ const slightlyLessYolo: object = new Date();
         </section>
         <section>
           <pre><code class="typescript" data-trim>
+const voldemort: never = `boom`;
+          </code></pre>
+          <aside class="notes">
+            never is the bottom type. No equivilence. New with 2.0. Implemented to support control flow analysis.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
 function logHello (name: string): void {
   console.log('Hello ' + name);
 }
@@ -164,6 +177,9 @@ const hello = (name: string): string => {
 // Infers string => string
 const hello = name => 'Hello ' + name;
           </code></pre>
+          <aside class="notes">
+            Functions. Void is a type, means theres no return. You've got arrow functions, lambdas. Community is leaning towards lambda assigned to const because it means no one can override your prototype. Inference is pretty good here.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -172,7 +188,7 @@ const stringArray: Array&lt;string&gt; = [ 'a', 'b', 'c' ];
 const numberArray: number[] = [ 1, 2, 3 ];
           </code></pre>
           <aside class="notes">
-            arrays
+            arrays. Community leans towards the square brackets trailing. Matches c# and doesn't confuse jsx
           </aside>
         </section>
         <section>
@@ -200,6 +216,9 @@ const p: Point = {
 
 const p3d: Point3D = p;
           </code></pre>
+          <aside class="notes">
+            Structural typing. The type names mean nothing. So long as the structure of the types are the same its equivelent. So long as the structure contains at least what is required then it can fulfil it.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -216,6 +235,9 @@ class Queue {
 
 const queue = new Queue(['seed', 'values']);
           </code></pre>
+          <aside class="notes">
+            Classes are es6 classes. Compile down fine. Types here are realish and can be referred to at run time. Can extend interfaces.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -235,6 +257,9 @@ const queue = new Queue&lt;number&gt;([1, 2]);
 // Inferred as Queue&lt;number&gt;
 const inferredQueue = new Queue([1,2]);
           </code></pre>
+          <aside class="notes">
+            Generics. Type params to create dependence through your object. Can use them on interfaces too. Generic params can be said to extend other types to seal them. The generic can be inferred based on arguments if you set them up sanely.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -252,6 +277,9 @@ type CatOrBus = Cat | Bus;
 
 type CatBus = Cat & Bus;
           </code></pre>
+          <aside class="notes">
+            
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -397,13 +425,103 @@ export = moment;
           </aside>
         </section>
         <section>
-          Tooling
+          tsc
+          <aside class="notes">
+            Theres a compiler, enough said
+          </aside>
         </section>
         <section>
-          compilers
+          JS Output
+          <aside class="notes">
+            outputs es6 or es5 or es3. Most language features compile to es3.
+            Typescript already close enough to js that the outputted code is nearly the same with the types stripped.
+            No chunky prelude etc to compile in, just the same esX polyfills you'd be using anyway.
+          </aside>
         </section>
         <section>
-          editor tools
+          tslint
+          <aside class="notes">
+            lint is more interesting. All the traditional linting. Also type sensitive linting and compiled anti-patterns
+          </aside>
+        </section>
+        <section>
+          But Why?
+          <aside class="notes">
+            Nothing presented so far is that different from flow. Significantly worse than purescript or ghcjs or elm.
+            So why use this one
+          </aside>
+        </section>
+        <section>
+          dumb looking js developer
+          <aside class="notes">
+            JS is a problem, but it's widely known. Retraining is expensive and hard to get buyin. Typescript almost is JS
+          </aside>
+        </section>
+        <section>
+          Typescript to control js
+          <aside class="notes">
+            Still like writing js, recongisable code. Type system strong enough to surpress class of errors. Suck the fun out of js.
+          </aside>
+        </section>
+        <section>
+          VS Code
+          <aside class="notes">
+            Awesome tools. vs code is Awesome. Fast, clean. Intellisense & documentation mapping. Great plugin support. Constant updates.
+          </aside>
+        </section>
+        <section>
+          <table>
+            <tr>
+              <td>vim</td>
+              <td>Tsuquyomi</td>
+            </tr>
+            <tr>
+              <td>emacs</td>
+              <td>Tide</td>
+            </tr>
+          </table>
+          <aside class="notes">
+            Both do intellisense omnicompletion. Tide has been excellent for me.
+          </aside>
+        </section>
+        <section>
+          Angular 2
+          rxjs
+          <aside class="notes">
+            Community adoption. Some big projects are driving it
+          </aside>
+        </section>
+        <section>
+          stackoverflow numbers for :-
+          - typescript
+          - flow
+          - purescript
+          - js
+          - ghcjs
+          <aside class="notes">
+            Enough people using it to catch the problems before you do and fix it
+          </aside>
+        </section>
+        <section>
+          Definitely typed numbers
+          <aside class="notes">
+            No point gradual typing, and you don't want to do the work typing the world. You want it typed for you.
+          </aside>
+        </section>
+        <section>
+          Book titles?
+          <aside class="notes">
+            Educational resources being developed
+          </aside>
+        </section>
+        <section>
+          It's just enough
+          <aside class="notes">
+            More has been invested in typescript than any of its competitors. It aims a lot lower, but you know where you need to go if you want to stretch higher
+          </aside>
+        </section>
+        <section>
+          Questions?
         </section>
       </div>
 		</div>
