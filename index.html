@@ -8,6 +8,7 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/solarized.css">
+    <link rel="stylesheet" href="css/main.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -28,8 +29,12 @@
           <h1>Typescript</h1>
           <h2>JS for squares</h2>
           <p>Chris Mckay</p>
+        </section>
+
+        <section>
+          <img data-src="/img/javascriptkitty.jpg" />
           <aside class="notes">
-            <p>Example Note</p>
+            Talking js languages a lot of late. Thought we'd look at some typescript.
           </aside>
         </section>
 
@@ -37,12 +42,16 @@
           <p>Typescript is...</p>
           <ul>
             <li class="fragment">Made by Microsoft in 2012, 1.0 in 2014</li>
+            <li class="fragment">Designed to deal with large-scale application development</li>
             <li class="fragment">Strictly typed superset of JS</li>
             <li class="fragment">That thing Angular 2 is written in</li>
           </ul>
           <aside class="notes">
-            <span>v2.0 last year</span>
-            <span>find out when flow dates are</span>
+            <span>v2.0 late last year</span>
+            <br/>
+            <span>Deals with the javascript issues faced in large applications</span>
+            <br/>
+            <span>Flow started in 2014</span>
           </aside>
         </section>
         <section data-background="/img/showmewhatyougot.gif">
@@ -121,23 +130,30 @@ const str: string = "a string";
           </code></pre>
           <aside class="notes">
             Basic primitives.
+            <br/>
             One type of number, no refinement for floats etc
+            <br/>
             2 strings, you want the lower case one
           </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
 const nothing: undefined = undefined;
-const nada: null = null;
 
-const artistFormerlyKnownAs: symbol = Symbol('Prince');
+const nada: null = null;
           </code></pre>
           <aside class="notes">
             undef = uninitialised
             null = unavailable
             they're both basically the same except when they're not.
             Just don't use null
-
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const artistFormerlyKnownAs: symbol = Symbol('Prince');
+          </code></pre>
+          <aside class="notes">
             Symbol, it makes completely unique values. es6, you probably won't need it, it's metaprogramming magic
           </aside>
         </section>
@@ -149,6 +165,9 @@ const slightlyLessYolo: object = new Date();
           </code></pre>
           <aside class="notes">
             any is anything
+            <br/>
+            Things used to default to any, not commonly seen since 2.0, now recommended to be turned off
+            <br/>
             object is anything not a primitive
           </aside>
         </section>
@@ -158,6 +177,14 @@ const voldemort: never = `boom`;
           </code></pre>
           <aside class="notes">
             never is the bottom type. No equivilence. New with 2.0. Implemented to support control flow analysis.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const youGetNothing: void = undefined;
+          </code></pre>
+          <aside class="notes">
+            Void = return of nothing from a function. In assignment it can only receive undef or null.
           </aside>
         </section>
         <section>
@@ -175,10 +202,10 @@ const hello = (name: string): string => {
 }
 
 // Infers string => string
-const hello = name => 'Hello ' + name;
+const hello = (name: string) => 'Hello ' + name;
           </code></pre>
           <aside class="notes">
-            Functions. Void is a type, means theres no return. You've got arrow functions, lambdas. Community is leaning towards lambda assigned to const because it means no one can override your prototype. Inference is pretty good here.
+            Functions. You've got arrow functions, lambdas. Inference is pretty good but its one directional, forward or down depending on your perspective.
           </aside>
         </section>
         <section>
@@ -196,10 +223,11 @@ const numberArray: number[] = [ 1, 2, 3 ];
 interface Point {
   x: number;
   y: number;
+  label?: string;
 }
 
 interface Point3D extends Point {
-  z?: number;
+  z: number;
 }
           </code></pre>
           <aside class="notes">
@@ -209,12 +237,19 @@ interface Point3D extends Point {
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-const p: Point = {
-  x: 3,
-  y: 2
+interface BirthdayCard {
+  message: string;
+}
+
+interface TerminationLetter {
+  message: string;
+}
+
+const badNews: TerminationLetter = {
+  message: "you're fired"
 };
 
-const p3d: Point3D = p;
+const happyBirthday: BirthdayCard = badNews;
           </code></pre>
           <aside class="notes">
             Structural typing. The type names mean nothing. So long as the structure of the types are the same its equivelent. So long as the structure contains at least what is required then it can fulfil it.
@@ -252,14 +287,33 @@ class Queue&lt;T&gt; {
   pop = () => this.data.shift();
 }
 
-const queue = new Queue&lt;number&gt;([1, 2]);
+const queueNumbers = new Queue&lt;number&gt;([1, 2]);
 
 // Inferred as Queue&lt;number&gt;
-const inferredQueue = new Queue([1,2]);
+const numbersQueue = new Queue([1,2]);
           </code></pre>
           <aside class="notes">
             Generics. Type params to create dependence through your object. Can use them on interfaces too. Generic params can be said to extend other types to seal them. The generic can be inferred based on arguments if you set them up sanely.
           </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+interface Payload {
+  id: string;
+}
+
+interface MessagePayload extends Payload {
+  message: string;
+}
+
+class Action&lt;P extends Payload&gt; {
+  private payload: P;
+  constructor(payload: P) {
+    this.payload= payload;
+  }
+  payloadId = () => this.payload.id;
+}
+          </code></pre>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -278,71 +332,104 @@ type CatOrBus = Cat | Bus;
 type CatBus = Cat & Bus;
           </code></pre>
           <aside class="notes">
-            
+            ADT's, | is a type union. The variable assigned to it must fulfil at least 1 of its member types requirements. & is an intersection type. values must fulfil all of its member types requirements
+          </aside>
+        </section>
+        <section>
+          <img height="200" alt="" src="/img/kona.jpg"/>
+          <pre><code class="typescript" data-trim>
+type CutePuppy = 'Kona';
+
+const cutePuppy: CutePuppy = 'Kona';
+          </code></pre>
+          <aside class="notes">
+            Last type, type literals. Type can be a value. Restricts assignment to just that value.
+          </aside>
+        </section>
+        <section>
+          <img height="200" alt="" src="/img/kona.jpg"/>
+          <img height="200" alt="" src="/img/monty.jpg"/>
+          <pre><code class="typescript" data-trim>
+type CutePuppy = 'Kona' | 'Monty';
+
+const cutePuppies: CutePuppy[] = ['Kona', 'Monty'];
+          </code></pre>
+          <aside class="notes">
+            Lets you build things like enums
           </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-interface Dog {
-  sound: 'Bark';
-  walk(): void;
+interface Blossom {
+  colour: 'Pink';
+  freeze(): void;
 }
 
-interface Cat {
-  sound: 'Meow';
-  pat(): void;
+interface Bubbles {
+  colour: 'Blue';
+  scream(): void;
 }
 
-type Pet = Dog | Cat;
+type PowerpuffGirl = Blossom | Bubbles;
           </code></pre>
+          <aside class="notes">
+            Also use them for type information. You can have a member variable thatas reliably a certain value.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-const whatsItDo = (p: Pet) => {
-  // sound is available on both
-  if (p.sound === 'Bark') {
-    // p is a Dog in here
-    p.walk();
+const doSuperPower = (girl: PowerpuffGirl) => {
+  // colour is available on both
+  if (girl.colour === 'Pink') {
+    // The girl is Blossom in here
+    girl.freeze();
   } else {
-    // p is a Cat here
-    p.pat();
+    // The girl is Bubbles here
+    p.scream();
   }
 }
           </code></pre>
+          <aside class="notes">
+            control flow analysis figures out what the value possibly could be at each point
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-interface Bird {
-  sound: 'Chirp';
-  fly(): void;
+interface Buttercup {
+  colour: 'Green';
+  fight(): void;
 }
 
-type Pet = Dog | Cat | Bird;
+type PowerpuffGirl = Blossom | Bubbles | Buttercup;
           </code></pre>
+          <aside class="notes">
+            There's 3 powerpuff girls though
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-const whatsItDo = (p: Pet) => {
-  // sound is available on both
-  if (p.sound === 'Bark') {
-    // p is a Dog in here
-    p.walk();
+const doSuperPower = (girl: PowerpuffGirl) => {
+  // colour is available on both
+  if (girl.colour === 'Pink') {
+    // The girl is Blossom in here
+    girl.freeze();
   } else {
-    // error here, p = Cat | Bird
-    p.pat();
+    // Error here The girl could be Bubbles or Buttercup
+    p.scream();
   }
 }
           </code></pre>
+          <aside class="notes">
+            The controll flow analysis figures out we haven't been discriminatory enough
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-const whatIsIt = (p: Pet): string {
-  // Error because unhandled case of Birb
-  // Function lacks ending return statement and return type
-  // does not include 'undefined'.
-  switch (p.sound) {
-    case 'Bark': return 'Dog';
-    case 'Meow': return 'Cat';
+const whatsHerName = (girl: PowerpuffGirl): string {
+  switch (girl.colour) {
+    case 'Pink': return 'Blossom';
+    case 'Blue': return 'Bubbles';
+    case 'Green': return 'Buttercup';
   }
 }
           </code></pre>
@@ -353,34 +440,16 @@ const whatIsIt = (p: Pet): string {
         </section>
         <section>
           <pre><code class="typescript" data-trim>
-// byDefault.ts
-const byDefault = "By Default";
+// Module.ts
+export const myExport = "Export Me";
 
-export default byDefault;
-
-// index.ts
-import byDefault from './byDefault';
+// Index.ts
+import { myExport } from './Module';
           </code></pre>
-        </section>
-        <section>
-          <pre><code class="typescript" data-trim>
-// explicit.ts
-export const explicitExport = "Explicit";
-
-// index.ts
-import { explicitExport } from './explicit';
-          </code></pre>
-        </section>
-        <section>
-          <pre><code class="typescript" data-trim>
-// explicit.ts
-export const explicitExport = "Explicit";
-
-// index.ts
-import * as Explicit from './explicit';
-
-console.log(Explicit.explicitExport);
-          </code></pre>
+          <aside class="notes">
+            Module system is exactly like in es6. All the same behaviours and  You export things and import them.
+            Nothing interesting to go into except for how typing gets involved.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -398,50 +467,62 @@ declare namespace moment {
 export = moment;
           </code></pre>
           <aside class="notes">
-            ambient declarations. Namespaces are modules. Can export top level stuff too.
+            ambient declarations. Namespaces are modules of interface descriptions and functional descriptions. Can export top level stuff too.
             Can declare globally available variables, attach things to window, etc.
           </aside>
         </section>
         <section>
-          screenshot of definitely typed
+          <img alt="" src="/img/definitelytypedrepo.png" />
           <aside class="notes">
             definitely typed module count, dates?
           </aside>
         </section>
         <section>
-          screenshot of npmjs @types namespace
+          <img alt="" src="/img/npmjstypes.png"/>
           <aside class="notes">
             As of typescript 2.0. Types managed by npm rather than 'typings' tool. Exported from definitelytyped
           </aside>
         </section>
         <section>
-          Image of file structure tree
-
-          node_modules/@types/...
-          node_modules/moment/moment.d.ts
-          types/...
+          <ul>
+            <li>/node_modules/moment/index.d.ts</li>
+            <li>/node_modules/@types/moment/index.d.ts</li>
+            <li>/types/moment/index.d.ts</li>
+          </ul>
           <aside class="notes">
             Looks first for ambient declaration in your source, then in shipped npm package, then in @types packages
           </aside>
         </section>
         <section>
-          tsc
+          <img alt="" src="/img/tsc.png"/>
           <aside class="notes">
-            Theres a compiler, enough said
+            Theres a compiler, Lots of options, not that interesting, but the JS it outputs is
           </aside>
         </section>
         <section>
-          JS Output
+          <img alt="" src="/img/tsjsemit.png"/>
           <aside class="notes">
-            outputs es6 or es5 or es3. Most language features compile to es3.
-            Typescript already close enough to js that the outputted code is nearly the same with the types stripped.
+            outputs es6 or es5 or es3.
+            <br/>
+            Most language features compile to es3.
+            <br/>
+            ts is close to JS to emitted code is close to what you wrote
+            <br/>
             No chunky prelude etc to compile in, just the same esX polyfills you'd be using anyway.
           </aside>
         </section>
         <section>
-          tslint
+          <img width=200 alt="" src="/img/tslint.jpg"/>
+          <br/>
+          <img alt="" src="/img/tslinteg.jpg"/>
           <aside class="notes">
-            lint is more interesting. All the traditional linting. Also type sensitive linting and compiled anti-patterns
+            tslint is powerful.
+            <br/>
+            Regular linting very good
+            <br/>
+            Semantic linting uses type & control flow analysis
+            <br/>
+            e.g. JqueryDeferred must have reject or resolve called on it in all branches
           </aside>
         </section>
         <section>
@@ -452,19 +533,52 @@ export = moment;
           </aside>
         </section>
         <section>
-          dumb looking js developer
+          <blockquote cite="Tony Morris">
+            <p>
+              &ldquo;I can't write correct javascript and I haven't met anyone else who can either.&rdquo;
+            </p>
+            <div style="text-align:right">
+            - Tony Morris
+            </div>
+          </blockquote>
           <aside class="notes">
-            JS is a problem, but it's widely known. Retraining is expensive and hard to get buyin. Typescript almost is JS
+            I don't think I have to convince anyone here that coding in JS isn't a great idea
           </aside>
         </section>
         <section>
-          Typescript to control js
+          <img src="/img/javascripteverywhere.jpeg" alt="" />
           <aside class="notes">
-            Still like writing js, recongisable code. Type system strong enough to surpress class of errors. Suck the fun out of js.
+            But its still everywhere, browsers, servers
           </aside>
         </section>
         <section>
-          VS Code
+          <img alt="" src="/img/dynamic-languages-godfather.jpg"/>
+          <aside class="notes">
+            Most problems are runtime errors
+          </aside>
+        </section>
+        <section>
+          <img alt="" src="/img/type-error-jesus.jpg"/>
+          <aside class="notes">
+            We can fix those types of errors
+          </aside>
+        </section>
+        <section>
+          <img src="/img/purescriptwindow.jpg" alt="" />
+          <aside class="notes">
+            It's a hard sell to reskill existing teams and beligerant managers
+          </aside>
+        </section>
+        <section>
+          <img src="/img/canttelltypescript.jpg" alt="" />
+          <aside class="notes">
+            Typescript is close enough that you don't need to reskill
+            <br/>
+            existing devs can read/write it
+          </aside>
+        </section>
+        <section>
+          <img alt="" src="/img/vscode.png"/>
           <aside class="notes">
             Awesome tools. vs code is Awesome. Fast, clean. Intellisense & documentation mapping. Great plugin support. Constant updates.
           </aside>
@@ -485,34 +599,84 @@ export = moment;
           </aside>
         </section>
         <section>
-          Angular 2
-          rxjs
+          <ul>
+            <li>Angular 2</li>
+            <li>RxJS</li>
+            <li>VS Code</li>
+            <li>ionic</li>
+            <li>Sodium</li>
+            <li>CycleJS</li>
+          </ul>
           <aside class="notes">
             Community adoption. Some big projects are driving it
           </aside>
         </section>
         <section>
-          stackoverflow numbers for :-
-          - typescript
-          - flow
-          - purescript
-          - js
-          - ghcjs
+          <h3>Stack Overflow</h3>
+          <table>
+            <tr>
+              <td>Javascript</td>
+              <td>1,444,140</td>
+            </tr>
+            <tr>
+              <td>Typescript</td>
+              <td>34,355</td>
+            </tr>
+            <tr>
+              <td>Elm</td>
+              <td>997</td>
+            </tr>
+            <tr>
+              <td>Flow</td>
+              <td>474</td>
+            </tr>
+            <tr>
+              <td>Purescript</td>
+              <td>252</td>
+            </tr>
+            <tr>
+              <td>GHCJs</td>
+              <td>74</td>
+            </tr>
+          </table>
           <aside class="notes">
             Enough people using it to catch the problems before you do and fix it
           </aside>
         </section>
         <section>
-          Definitely typed numbers
+          3385 packages in Definitely Typed
           <aside class="notes">
             No point gradual typing, and you don't want to do the work typing the world. You want it typed for you.
           </aside>
         </section>
         <section>
-          Book titles?
+          <ul>
+            <li>Video courses</li>
+            <li>Books by every major publisher</li>
+            <li>Community guides</li>
+          </ul>
           <aside class="notes">
             Educational resources being developed
           </aside>
+        </section>
+        <section>
+          <pre><code class="typescript" data-trim>
+const some = Option(33) // some === Some(33)
+const none = Option(null) // none === None
+
+const some = Option.all(
+  Option(10),
+  Option(5)
+)
+// some === Some([10, 5])
+
+const none = Option.all(
+  Option(10),
+  None,
+  Option(5),
+)
+// none === None
+          </code></pre>
         </section>
         <section>
           It's just enough
