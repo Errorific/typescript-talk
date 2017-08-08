@@ -32,7 +32,7 @@
         </section>
 
         <section>
-          <img data-src="/img/javascriptkitty.jpg" />
+          <img data-src="/img/javascripthomer.jpg" />
           <aside class="notes">
             Talking js languages a lot of late. Thought we'd look at some typescript.
           </aside>
@@ -41,7 +41,7 @@
         <section>
           <p>Typescript is...</p>
           <ul>
-            <li class="fragment">Made by Microsoft in 2012, 1.0 in 2014</li>
+            <li class="fragment">Release by Microsoft in 2012, 1.0 in 2014</li>
             <li class="fragment">Designed to deal with large-scale application development</li>
             <li class="fragment">Strictly typed superset of JS</li>
             <li class="fragment">That thing Angular 2 is written in</li>
@@ -50,6 +50,8 @@
             <span>v2.0 late last year</span>
             <br/>
             <span>Deals with the javascript issues faced in large applications</span>
+            <br/>
+            <span>Superset so js is valid ts</span>
             <br/>
             <span>Flow started in 2014</span>
           </aside>
@@ -293,7 +295,11 @@ const queueNumbers = new Queue&lt;number&gt;([1, 2]);
 const numbersQueue = new Queue([1,2]);
           </code></pre>
           <aside class="notes">
-            Generics. Type params to create dependence through your object. Can use them on interfaces too. Generic params can be said to extend other types to seal them. The generic can be inferred based on arguments if you set them up sanely.
+            Generics. Classes, interfaces and functions can be paramaterized across types allowing for parametric code.
+            <br/>
+            Can explicitly define the type params
+            <br/>
+            Can be inferred, but only forwards/down
           </aside>
         </section>
         <section>
@@ -314,6 +320,9 @@ class Action&lt;P extends Payload&gt; {
   payloadId = () => this.payload.id;
 }
           </code></pre>
+          <aside class="notes">
+            Can constrain the generic parameters. Can also constrain in terms of other parameters.
+          </aside>
         </section>
         <section>
           <pre><code class="typescript" data-trim>
@@ -641,6 +650,8 @@ export = moment;
           </table>
           <aside class="notes">
             Enough people using it to catch the problems before you do and fix it
+            <br/>
+            Great getting on irc and asking bodil about purescript or Luite about ghcjs
           </aside>
         </section>
         <section>
